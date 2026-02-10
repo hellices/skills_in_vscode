@@ -1,40 +1,64 @@
 # Quick Start Guide
 
-Get started with GitHub Copilot custom instructions and Anthropic skills in 5 minutes.
+Get started with GitHub Copilot customization in VS Code.
 
-## For Impatient Developers
+## Choose Your Path
 
-### Option 1: Just Use Custom Instructions (0 cost, 2 minutes)
+### Path 1: Instructions Only (Free, 2 minutes)
+Basic coding standards and conventions.
 
 ```bash
-# 1. Copy instructions to your project
-cp -r .github/copilot /your-project/.github/
+# Copy instructions to your project
+cp .github/copilot-instructions.md /your-project/.github/
 
-# 2. Open VS Code in your project
-code /your-project
-
-# 3. Start coding - Copilot now follows your instructions!
+# Start coding - Copilot follows your rules!
 ```
 
-### Option 2: Full Power Mode (small cost, 5 minutes)
+### Path 2: Add Prompt Files (Free, 5 minutes)
+Reusable workflows with slash commands.
 
 ```bash
-# 1. Copy custom instructions
-cp -r .github/copilot /your-project/.github/
+# Copy prompt files
+mkdir -p /your-project/.github/prompts
+cp examples/prompts/*.prompt.md /your-project/.github/prompts/
 
-# 2. Copy skills configuration
-cp -r .vscode /your-project/
+# Use in Copilot Chat: /review, /test, /component
+```
 
-# 3. Set your Anthropic API key
-export ANTHROPIC_API_KEY="your-key-here"
+### Path 3: Add Custom Agents (Free, 10 minutes)
+Specialized AI personas for different roles.
 
-# 4. Install Continue extension in VS Code
+```bash
+# Copy agent files
+mkdir -p /your-project/.github/agents
+cp examples/agents/*.agent.md /your-project/.github/agents/
+
+# Use in Copilot Chat: @security, @architect
+```
+
+### Path 4: Add Agent Skills (Free, 15 minutes)
+Structured workflows for specific tasks.
+
+```bash
+# Copy skills
+mkdir -p /your-project/.github/skills
+cp -r examples/skills/* /your-project/.github/skills/
+
+# Auto-loaded when relevant
+```
+
+### Path 5: Anthropic Integration (Paid, 20 minutes)
+Add Claude AI capabilities via Continue extension.
+
+```bash
+# Install Continue extension
 code --install-extension Continue.continue
 
-# 5. Open your project
-code /your-project
+# Set API key
+export ANTHROPIC_API_KEY="your-key-here"
 
-# 6. Use skills with Ctrl+I or Command Palette
+# Configure
+cp examples/python/.vscode/skills.json /your-project/.vscode/
 ```
 
 ## Language-Specific Quick Start
@@ -67,47 +91,75 @@ code .
 # Start coding - instructions active!
 ```
 
-## What Do I Get?
+## What You Get
 
-### With Custom Instructions ✅
+### With Instructions ✅
 - Automatic code style enforcement
 - Naming convention guidance
 - Project-specific patterns
-- Zero additional cost
-- Always active
+- Zero cost, always active
 
-### With Anthropic Skills ⚡
-- Generate complete test suites
-- Deep code analysis
-- Security scanning
-- Complex refactoring
-- Documentation generation
+### With Prompt Files ⚡
+- Reusable workflows (`/review`, `/test`)
+- Standardized team processes
+- Zero cost, on-demand
+
+### With Custom Agents 🤖
+- Role-specific AI personas (`@security`, `@architect`)
+- Specialized expertise
+- Tool access control
+- Zero cost, context-switching
+
+### With Agent Skills 📚
+- Structured task procedures
+- Auto-loaded when relevant
+- Shareable across projects
+- Zero cost, intelligent
+
+### With Anthropic Skills 🚀
+- Claude AI capabilities
+- Advanced reasoning
+- Deep analysis
 - ~$3-5/month for moderate use
 
 ## Next Steps
 
-1. **Read the docs**: Start with [README.md](./README.md)
-2. **Try examples**: Explore `examples/` directory
-3. **Customize**: Edit `.github/copilot/instructions.md` for your needs
-4. **Create skills**: See [Creating Skills Guide](./docs/anthropic-skills/creating-skills.md)
-5. **Share with team**: Commit files to your repository
+1. **Read the overview**: Start with [Customization Overview](./docs/overview.md)
+2. **Pick your features**: 
+   - [Instructions](./docs/custom-instructions/README.md)
+   - [Prompt Files](./docs/prompt-files/README.md)
+   - [Custom Agents](./docs/custom-agents/README.md)
+   - [Agent Skills](./docs/agent-skills/README.md)
+   - [Anthropic Skills](./docs/anthropic-skills/installation.md)
+3. **Try examples**: Explore `examples/` directory
+4. **Customize**: Edit files for your project needs
+5. **Share**: Commit to Git for team collaboration
 
 ## Common Questions
 
-**Q: Do I need both?**
-A: No. Start with custom instructions (free). Add skills later if you need advanced features.
+**Q: What's the difference between all these options?**
+A: 
+- **Instructions**: Always-on coding rules
+- **Prompt Files**: Reusable workflows (slash commands)
+- **Custom Agents**: Role-specific personas
+- **Agent Skills**: Structured procedures
+- **Anthropic Skills**: Claude AI integration (paid)
+
+**Q: Which should I start with?**
+A: Start with Instructions (free, easy). Add others as needed.
+
+**Q: Do I need all of them?**
+A: No! Pick what fits your needs. Instructions alone are powerful.
 
 **Q: How much does it cost?**
-A: Custom instructions: $0. Anthropic skills: ~$3-15/month depending on usage.
-
-**Q: Which languages are supported?**
-A: Both work with any language. We provide examples for Python, Node.js, and Java.
+A: Instructions, Prompts, Agents, and Skills: Free (included with Copilot)
+   Anthropic Skills: ~$3-15/month depending on usage
 
 **Q: Can my team use this?**
-A: Yes! Custom instructions are shared via Git. Skills need individual API keys.
+A: Yes! All files can be shared via Git.
 
-**Q: Is it hard to set up?**
-A: Custom instructions: Very easy (copy files). Skills: Medium (install extension + API key).
+**Q: Which languages are supported?**
+A: All languages. We provide examples for Python, Node.js, and Java.
 
 ## Help & Resources
 
