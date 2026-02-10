@@ -1,6 +1,6 @@
 # AI Agent Development with Microsoft Agent Framework
 
-Complete, immediately usable example for developing AI agents using Microsoft Agent Framework in VS Code.
+Complete, immediately usable example for developing AI agents using Microsoft Agent Framework in VS Code with **Python** (TypeScript optional).
 
 ## Quick Start
 
@@ -11,7 +11,7 @@ cp -r examples/ai-agent-development /your-project/
 # 2. Open in VS Code
 code /your-project/ai-agent-development
 
-# 3. Start developing agents!
+# 3. Start developing agents in Python!
 # - Custom instructions active automatically
 # - Use /new-agent to create agents
 # - Use @red-team or @blue-team for security analysis
@@ -21,20 +21,23 @@ code /your-project/ai-agent-development
 
 ### ✅ Custom Instructions (`.github/copilot-instructions.md`)
 
-Development patterns for Microsoft Agent Framework:
+Development patterns for Microsoft Agent Framework with **Python**:
 - Agent architecture guidelines
-- TypeScript standards
-- Testing requirements
+- Python 3.11+ standards with type hints
+- Async/await patterns with asyncio
+- Testing requirements (pytest)
 - Security best practices
 - Error handling patterns
 - Performance considerations
 
 **Always active** - influences all Copilot suggestions
 
+**Note**: TypeScript patterns available as optional alternative
+
 ### ✅ Prompt Files (`.github/prompts/`)
 
-Reusable workflows:
-- `/new-agent` - Generate complete agent with boilerplate
+Reusable workflows for Python:
+- `/new-agent` - Generate complete Python agent with boilerplate
 - `/agent-communication` - Design message patterns between agents
 
 **Usage**: Type `/prompt-name` in Copilot Chat
@@ -58,7 +61,7 @@ Specialized AI personas:
 
 Structured procedures:
 - `agent-testing` - Comprehensive testing strategy
-  - Unit tests
+  - Unit tests with pytest
   - Integration tests
   - E2E tests
   - Performance tests
@@ -75,7 +78,7 @@ Complete guide for:
 
 ## Practical Examples
 
-### Example 1: Create New Security Agent
+### Example 1: Create New Security Agent (Python)
 
 ```bash
 # 1. Select this specification:
@@ -100,32 +103,30 @@ Create a security monitoring agent that:
 
 ### Example 2: Security Analysis Workflow
 
-```typescript
-// 1. Write potentially vulnerable code
-const getUserData = (userId) => {
-  const query = `SELECT * FROM users WHERE id = ${userId}`;
-  return db.execute(query);
-};
+```python
+# 1. Write potentially vulnerable code
+def get_user_data(user_id):
+    query = f"SELECT * FROM users WHERE id = {user_id}"
+    return db.execute(query)
 
-// 2. Ask Red Team for analysis
-// @red-team Analyze this code for security vulnerabilities
+# 2. Ask Red Team for analysis
+# @red-team Analyze this code for security vulnerabilities
 
-// 3. Get vulnerability report:
-// {
-//   "type": "SQL_INJECTION",
-//   "severity": "HIGH",
-//   "exploit": "userId = '1 OR 1=1'",
-//   "remediation": "Use parameterized queries"
-// }
+# 3. Get vulnerability report:
+# {
+#   "type": "SQL_INJECTION",
+#   "severity": "HIGH",
+#   "exploit": "user_id = '1 OR 1=1'",
+#   "remediation": "Use parameterized queries"
+# }
 
-// 4. Ask Blue Team for fix
-// @blue-team Remediate the SQL injection vulnerability
+# 4. Ask Blue Team for fix
+# @blue-team Remediate the SQL injection vulnerability
 
-// 5. Get secure implementation:
-const getUserData = (userId) => {
-  const query = 'SELECT * FROM users WHERE id = ?';
-  return db.execute(query, [userId]);
-};
+# 5. Get secure implementation:
+def get_user_data(user_id: int) -> dict:
+    query = "SELECT * FROM users WHERE id = ?"
+    return db.execute(query, (user_id,))
 ```
 
 ### Example 3: Design Agent Communication
@@ -203,109 +204,121 @@ ai-agent-development/
 
 ### Red Team: Finding Vulnerabilities
 
-```typescript
-// Code to analyze
-class AuthService {
-  login(username: string, password: string) {
-    const user = db.query(`
-      SELECT * FROM users 
-      WHERE username = '${username}' 
-      AND password = '${password}'
-    `);
-    return user ? generateToken(user) : null;
-  }
-}
+```python
+# Code to analyze
+class AuthService:
+    """Authentication service."""
+    
+    def login(self, username: str, password: str):
+        """Login user."""
+        user = db.query(f"""
+            SELECT * FROM users 
+            WHERE username = '{username}' 
+            AND password = '{password}'
+        """)
+        return generate_token(user) if user else None
 
-// Ask Red Team
-// @red-team Perform security analysis
+# Ask Red Team
+# @red-team Perform security analysis
 
-// Red Team finds:
-// 1. SQL Injection in username/password
-// 2. Plaintext password comparison
-// 3. No rate limiting
-// 4. Missing input validation
+# Red Team finds:
+# 1. SQL Injection in username/password
+# 2. Plaintext password comparison
+# 3. No rate limiting
+# 4. Missing input validation
 ```
 
 ### Blue Team: Implementing Fixes
 
-```typescript
-// Ask Blue Team
-// @blue-team Fix the identified vulnerabilities
+```python
+# Ask Blue Team
+# @blue-team Fix the identified vulnerabilities
 
-// Blue Team provides secure implementation:
-import bcrypt from 'bcrypt';
-import { z } from 'zod';
-import rateLimit from 'express-rate-limit';
+# Blue Team provides secure implementation:
+import bcrypt
+from pydantic import BaseModel, Field, validator
+from slowapi import Limiter
+from slowapi.util import get_remote_address
 
-const loginLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000,
-  max: 5
-});
+limiter = Limiter(key_func=get_remote_address)
 
-const LoginSchema = z.object({
-  username: z.string().min(3).max(50).regex(/^[a-zA-Z0-9_]+$/),
-  password: z.string().min(8)
-});
+class LoginSchema(BaseModel):
+    """Login request validation."""
+    username: str = Field(..., min_length=3, max_length=50, regex=r'^[a-zA-Z0-9_]+$')
+    password: str = Field(..., min_length=8)
 
-class AuthService {
-  async login(username: string, password: string) {
-    // Validate input
-    const validated = LoginSchema.parse({ username, password });
+class AuthService:
+    """Secure authentication service."""
     
-    // Use parameterized query
-    const user = await db.query(
-      'SELECT * FROM users WHERE username = ?',
-      [validated.username]
-    );
-    
-    if (!user) return null;
-    
-    // Compare hashed password
-    const isValid = await bcrypt.compare(validated.password, user.password_hash);
-    
-    return isValid ? generateToken(user) : null;
-  }
-}
+    async def login(self, username: str, password: str) -> dict | None:
+        """Login user with secure implementation."""
+        # Validate input
+        validated = LoginSchema(username=username, password=password)
+        
+        # Use parameterized query
+        user = await db.query(
+            "SELECT * FROM users WHERE username = ?",
+            (validated.username,)
+        )
+        
+        if not user:
+            return None
+        
+        # Compare hashed password
+        is_valid = bcrypt.checkpw(
+            validated.password.encode(),
+            user.password_hash.encode()
+        )
+        
+        return generate_token(user) if is_valid else None
 
-// Apply rate limiting
-app.post('/login', loginLimiter, async (req, res) => {
-  // ... login logic
-});
+# Apply rate limiting
+@app.post('/login')
+@limiter.limit("5/15minutes")
+async def login_endpoint(request: LoginRequest):
+    # ... login logic
 ```
 
 ## Testing Your Agents
 
 Use the agent-testing skill:
 
-```typescript
-// Generate comprehensive tests
-// Use agent-testing skill to create tests for AuthService
+```python
+# Generate comprehensive tests
+# Use agent-testing skill to create tests for AuthService
 
-// Result: Complete test suite
-describe('AuthService', () => {
-  describe('login', () => {
-    it('should reject SQL injection attempts', async () => {
-      const maliciousInput = "admin' OR '1'='1";
-      
-      await expect(authService.login(maliciousInput, 'pass'))
-        .rejects
-        .toThrow(ValidationError);
-    });
+# Result: Complete pytest test suite
+import pytest
+from unittest.mock import AsyncMock
 
-    it('should enforce rate limiting', async () => {
-      // Attempt 6 logins in quick succession
-      for (let i = 0; i < 6; i++) {
-        await request(app).post('/login').send({ username, password });
-      }
-      
-      const response = await request(app)
-        .post('/login')
-        .send({ username, password });
-      
-      expect(response.status).toBe(429);
-    });
-  });
-});
+@pytest.mark.asyncio
+class TestAuthService:
+    """Test suite for AuthService."""
+    
+    async def test_reject_sql_injection(self):
+        """Should reject SQL injection attempts."""
+        auth_service = AuthService()
+        malicious_input = "admin' OR '1'='1"
+        
+        with pytest.raises(ValueError, match="Invalid username"):
+            await auth_service.login(malicious_input, "password")
+    
+    async def test_rate_limiting(self, client):
+        """Should enforce rate limiting."""
+        # Attempt 6 logins in quick succession
+        for _ in range(6):
+            await client.post('/login', json={
+                "username": "test",
+                "password": "password"
+            })
+        
+        # 7th attempt should be rate limited
+        response = await client.post('/login', json={
+            "username": "test",
+            "password": "password"
+        })
+        
+        assert response.status_code == 429
 ```
 
 ## Anthropic Skills Alternative
@@ -392,22 +405,22 @@ All team members now:
 
 ### Chaining Agents
 
-```typescript
-// Complex workflow
-// 1. @red-team Analyze security
-// 2. Review findings
-// 3. @blue-team Implement top 3 fixes
-// 4. @red-team Validate fixes
-// 5. Document changes
+```python
+# Complex workflow
+# 1. @red-team Analyze security
+# 2. Review findings
+# 3. @blue-team Implement top 3 fixes
+# 4. @red-team Validate fixes
+# 5. Document changes
 ```
 
 ### Custom Combinations
 
-```bash
+```python
 # Generate + Secure + Test
-/new-agent Create payment processor
-@blue-team Add security controls
-Generate tests for payment processor
+# /new-agent Create payment processor
+# @blue-team Add security controls
+# Generate comprehensive tests for payment processor
 ```
 
 ## Troubleshooting

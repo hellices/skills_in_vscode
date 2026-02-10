@@ -101,6 +101,7 @@ description: Create test suites
 - [`examples/python/`](./examples/python/) - Python project with custom instructions
 - [`examples/nodejs/`](./examples/nodejs/) - Node.js project with custom instructions
 - [`examples/java/`](./examples/java/) - Java project with custom instructions
+- [`examples/ai-agent-development/`](./examples/ai-agent-development/) - **AI agent development with Microsoft Agent Framework (Python)** - Red/Blue team security workflows
 
 ### Example Files
 
