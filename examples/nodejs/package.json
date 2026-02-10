@@ -1,0 +1,17 @@
+{
+  "name": "nodejs-example",
+  "version": "1.0.0",
+  "description": "Example Node.js project with Copilot custom instructions",
+  "type": "module",
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "build": "tsc",
+    "test": "vitest"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "typescript": "^5.0.0",
+    "tsx": "^3.12.0",
+    "vitest": "^0.34.0"
+  }
+}

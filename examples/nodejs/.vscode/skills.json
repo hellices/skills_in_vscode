@@ -1,0 +1,13 @@
+{
+  "skills": [
+    {
+      "id": "typescript-reviewer",
+      "name": "TypeScript Code Reviewer",
+      "description": "Reviews TypeScript code for best practices",
+      "provider": "anthropic",
+      "model": "claude-3-sonnet-20240229",
+      "systemPrompt": "Review TypeScript code for type safety, patterns, and best practices.",
+      "filePatterns": ["**/*.ts", "**/*.tsx"]
+    }
+  ]
+}

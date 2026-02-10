@@ -1,0 +1,22 @@
+{
+  "skills": [
+    {
+      "id": "python-code-reviewer",
+      "name": "Python Code Reviewer",
+      "description": "Reviews Python code for best practices",
+      "provider": "anthropic",
+      "model": "claude-3-sonnet-20240229",
+      "systemPrompt": "Review Python code for PEP 8, type hints, docstrings, and best practices.",
+      "filePatterns": ["**/*.py"]
+    },
+    {
+      "id": "python-test-generator",
+      "name": "Python Test Generator",
+      "description": "Generates pytest tests",
+      "provider": "anthropic",
+      "model": "claude-3-sonnet-20240229",
+      "systemPrompt": "Generate pytest tests following project conventions.",
+      "filePatterns": ["**/*.py"]
+    }
+  ]
+}
