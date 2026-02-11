@@ -1,0 +1,13 @@
+{
+  "skills": [
+    {
+      "id": "java-reviewer",
+      "name": "Java Code Reviewer",
+      "description": "Reviews Java code for best practices",
+      "provider": "anthropic",
+      "model": "claude-3-sonnet-20240229",
+      "systemPrompt": "Review Java code for SOLID principles, design patterns, and Spring Boot best practices.",
+      "filePatterns": ["**/*.java"]
+    }
+  ]
+}
